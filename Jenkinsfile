@@ -5,7 +5,10 @@ pipeline {
         stage ('Build') {
             steps {
                 sh 'pwd'
-                sh 'cd backend && ./gradle clean build'
+                sh 'cd backend'
+                withGradle {
+                    sh './gradlew build'
+                }
                 sh 'pwd'
             }
         }
