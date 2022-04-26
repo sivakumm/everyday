@@ -4,7 +4,9 @@ pipeline {
     stages {
         stage ('Build') {
             steps {
-                echo 'Building the application'
+                sh 'pwd'
+                sh 'cd backend && ./gradlew clean build'
+                sh 'pwd'
             }
         }
 
