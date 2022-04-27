@@ -6,6 +6,8 @@ pipeline {
             steps {
                 sh 'pwd'
                 sh 'ls -l'
+                sh 'chmod +x ./gradlew'
+                sh 'ls -l'
                 sh './gradlew buildBackend'
             }
         }
