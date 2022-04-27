@@ -4,12 +4,9 @@ pipeline {
     stages {
         stage ('Build') {
             steps {
-                withGradle {
-                    sh 'pwd'
-                    sh 'cd backend'
-                    sh './gradlew build'
-                    sh 'pwd'
-                }
+                sh 'pwd'
+                sh 'ls -l'
+                sh './gradlew buildBackend'
             }
         }
 
