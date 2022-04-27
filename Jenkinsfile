@@ -4,12 +4,12 @@ pipeline {
     stages {
         stage ('Build') {
             steps {
-                sh 'pwd'
-                sh 'cd backend'
                 withGradle {
+                    sh 'pwd'
+                    sh 'cd backend'
                     sh './gradlew build'
+                    sh 'pwd'
                 }
-                sh 'pwd'
             }
         }
 
