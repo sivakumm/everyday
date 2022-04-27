@@ -1,0 +1,8 @@
+task start {
+    finalizedBy tasks.findByPath('backend:bootRun')
+}
+
+task buildBackend {
+    finalizedBy tasks.findByPath('backend:clean')
+    finalizedBy tasks.findByPath('backend:build')
+}
