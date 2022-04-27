@@ -1,12 +1,14 @@
 pipeline {
     agent any
 
+    tools {
+        gradle 'Gradle-7.4.2'
+    }
+
     stages {
         stage ('Build') {
             steps {
-                sh 'chmod +x ./gradlew'
-                sh 'ls -l'
-                sh './gradlew buildBackend --no-daemon'
+                sh './gradlew -v'
             }
         }
 
