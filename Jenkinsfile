@@ -6,17 +6,17 @@ pipeline {
     }
 
     stages {
-        stage ('Build') {
+        stage ('Build and Test Backend') {
             steps {
                 withGradle() {
-                    sh './gradlew -v'
+                    sh './gradlew buildBackend'
                 }
             }
         }
 
-        stage ('Test') {
+        stage ('Build and Test Frontend') {
             steps {
-                echo 'Testing the application'
+                echo 'Frontend build and testing...'
             }
         }
 
@@ -27,7 +27,7 @@ pipeline {
                 }
             }
             steps {
-                echo 'Deploying the application'
+                echo 'Deployment...'
             }
         }
     }
