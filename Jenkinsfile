@@ -8,9 +8,7 @@ pipeline {
     stages {
         stage ('Build and Test Backend') {
             steps {
-                withGradle() {
-                    sh './gradlew buildBackend'
-                }
+                sh 'Backend build and testing...'
             }
         }
 
