@@ -6,3 +6,23 @@ task buildBackend {
     finalizedBy tasks.findByPath('backend:clean')
     finalizedBy tasks.findByPath('backend:build')
 }
+
+task buildFrontend {
+    finalizedBy tasks.findByPath('frontend:build')
+}
+
+task copyStaticFiles(type: Copy) {
+    from 'frontend/dist/frontend'
+    into 'backend/build/resources/static/'
+}
+
+task clean {
+    finalizedBy tasks.findByPath('backend:clean')
+    finalizedBy tasks.findByPath('frontend:clean')
+}
+
+task build {
+    dependsOn 'buildBackend'
+    dependsOn 'buildFrontend'
+    finalizedBy 'copyStaticFiles'
+}
