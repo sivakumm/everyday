@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        gradle 'Gradle-home'
+        gradle 'Gradle-7.4.2'
     }
 
     stages {
