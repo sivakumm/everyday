@@ -1,13 +1,16 @@
 version: "3.3"
 
 services:
-  everyday:
+  webapp:
     build: .
     restart: always
     environment:
-      - PORT=9090
-      - MONGO_HOST=mongodb:27017
-      - MONGO_DATABASE=everyday
+      - SERVER_PORT=9090
+      - SPRING_DATA_MONGODB_DATABASE=everyday
+      - SPRING_DATA_MONGODB_HOST=mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
+    ports:
+      - "9090:9090"
 
   mongodb:
     image: mongo:latest
