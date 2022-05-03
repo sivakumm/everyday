@@ -3,7 +3,6 @@ task start {
 }
 
 task buildBackend {
-    finalizedBy tasks.findByPath('backend:clean')
     finalizedBy tasks.findByPath('backend:build')
 }
 

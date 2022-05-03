@@ -8,7 +8,11 @@ services:
       - PORT=9090
       - MONGO_HOST=mongodb:27017
       - MONGO_DATABASE=everyday
+    ports:
+      - "8081:8081"
 
   mongodb:
     image: mongo:latest
     restart: always
+
+
