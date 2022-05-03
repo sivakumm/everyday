@@ -13,7 +13,7 @@ task buildFrontend {
 
 task copyStaticFiles(type: Copy) {
     from 'frontend/dist/frontend'
-    into 'backend/build/resources/static/'
+    into 'backend/src/main/resources/static/'
 }
 
 task clean {
@@ -21,8 +21,13 @@ task clean {
     finalizedBy tasks.findByPath('frontend:clean')
 }
 
+task deleteStaticFiles(type: Delete) {
+    delete 'backend/src/main/resources/static/'
+}
+
 task build {
-    dependsOn 'buildBackend'
     dependsOn 'buildFrontend'
-    finalizedBy 'copyStaticFiles'
+    dependsOn 'copyStaticFiles'
+    finalizedBy 'buildBackend'
+    finalizedBy 'deleteStaticFiles'
 }
