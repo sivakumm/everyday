@@ -16,3 +16,8 @@ task build(type: NpmTask) {
   dependsOn 'npmInstall'
   args = ['run', 'build']
 }
+
+task test(type: NpmTask) {
+  dependsOn 'npmInstall'
+  args = ['run', 'test-ci']
+}
