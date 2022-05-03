@@ -5,12 +5,13 @@ services:
     build: .
     restart: always
     environment:
+      - SERVER_PORT=9090
       - SPRING_DATA_MONGO_HOST=mongodb
       - SPRING_DATA_MONGO_PORT=27017
       - SPRING_DATA_MONGO_DATABASE=everyday
 
     ports:
-      - "8081:8081"
+      - "9090:9090"
 
   mongodb:
     image: mongo:latest
