@@ -6,17 +6,37 @@ pipeline {
     }
 
     stages {
-        stage ('Build and Test Backend') {
+        stage ('Build and Test Frontend') {
             steps {
                 withGradle() {
-                    sh './gradlew buildBackend'
+                    sh './gradlew :frontend:clean'
+                    sh './gradlew :frontend:build'
+                    sh './gradlew :frontend:test'
                 }
             }
         }
 
-        stage ('Build and Test Frontend') {
+        stage ('Copy Static Dependencies') {
             steps {
-                echo 'Frontend build and testing...'
+                withGradle() {
+                    sh './gradlew copyStaticFiles'
+                }
+            }
+        }
+
+        stage ('Build and Test Backend') {
+            steps {
+                withGradle() {
+                    sh './gradlew :backend:clean'
+                    sh './gradlew :backend:build'
+                    sh './gradlew :backend:test'
+                }
+            }
+        }
+
+        stage ('Create Docker Image') {
+            steps {
+                sh 'docker-compose build --no-cache --pull'
             }
         }
 
