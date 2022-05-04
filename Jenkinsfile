@@ -49,7 +49,7 @@ pipeline {
                 }
             }
             steps {
-                echo 'Deployment...'
+                echo 'Deployment of docker image...'
             }
         }
     }
