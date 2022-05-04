@@ -17,14 +17,6 @@ pipeline {
             }
         }
 
-        stage ('Copy Static Dependencies') {
-            steps {
-                withGradle() {
-                    sh './gradlew copyStaticFiles'
-                }
-            }
-        }
-
         stage ('Build and Test Backend') {
             steps {
                 withGradle() {
