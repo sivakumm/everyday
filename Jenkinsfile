@@ -3,16 +3,17 @@ pipeline {
 
     tools {
         gradle 'Gradle-7.4.2'
+        nodejs 'NodeJs'
     }
 
     stages {
         stage ('Build and Test Frontend') {
             steps {
-                withGradle() {
-                    sh './gradlew :frontend:clean'
-                    sh './gradlew :frontend:build'
-                    sh './gradlew :frontend:test'
-                }
+                sh 'npm -v'
+                sh 'node -v'
+                sh './gradlew :frontend:clean'
+                sh './gradlew :frontend:build'
+                sh './gradlew :frontend:test'
             }
         }
 
