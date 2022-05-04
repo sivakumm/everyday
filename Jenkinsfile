@@ -1,12 +1,16 @@
 pipeline {
     agent any
 
+    environment {
+    		DOCKERHUB_CREDENTIALS=credentials('dockerhub-cred')
+    	}
+
     tools {
         gradle 'Gradle-7.4.2'
     }
 
     stages {
-        stage ('Build and Test Frontend') {
+      /*  stage ('Build and Test Frontend') {
             steps {
                 withGradle() {
                     sh './gradlew :frontend:clean'
@@ -23,7 +27,7 @@ pipeline {
                 }
             }
         }
-
+*/
         stage ('Build and Test Backend') {
             steps {
                 withGradle() {
@@ -36,9 +40,23 @@ pipeline {
 
         stage ('Create Docker Image') {
             steps {
-                sh 'docker-compose build --no-cache --pull'
+               sh 'docker context update remote --default-stack-orchestrator swarm'
+               sh 'docker-compose build --no-cache --pull'
             }
         }
+
+        stage ('Login') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+
+        stage('Push') {
+
+        			steps {
+        				sh 'docker push everyday/webapp:latest'
+        			}
+        		}
 
         stage ('Deploy') {
             when {
