@@ -37,6 +37,15 @@ pipeline {
 
         stage ('Create Docker Image') {
             steps {
+                script {
+                    try {
+                        BRANCH_NAME_LOWER_CASE = BRANCH_NAME.toLowerCase();
+                        sh "docker rmi everyday_${BRANCH_NAME_LOWER_CASE}_webapp"
+                    } catch (err) {
+                        echo err.getMessage()
+                    }
+                }
+
                 sh 'docker-compose build --no-cache --pull'
             }
         }
