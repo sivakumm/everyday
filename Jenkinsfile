@@ -30,15 +30,12 @@ pipeline {
         stage ('Create Docker Image') {
             steps {
                 script {
-                    try {
-                        BRANCH_NAME_LOWER_CASE = BRANCH_NAME.toLowerCase();
-                        sh "docker rmi everyday_${BRANCH_NAME_LOWER_CASE}_webapp"
-                    } catch (err) {
-                        echo err.getMessage()
-                    }
+                    final String branchNameLowerCase = BRANCH_NAME.toLowerCase();
+                    IMAGE_NAME = "everyday_${branchNameLowerCase}_webapp"
+                    IMAGE_TAG = "1.${BRANCH_NAME.split('-')[1]}.${BUILD_NUMBER}";
                 }
 
-                sh 'docker-compose build --no-cache --pull'
+                sh 'docker-compose build --no-cache --pull webapp'
             }
         }
 
@@ -48,8 +45,35 @@ pipeline {
                     BRANCH_NAME == 'master'
                 }
             }
+
+            environment {
+                DOCKERHUB_CREDENTIALS = credentials('docker-hub-access')
+            }
+
             steps {
-                echo 'Deployment of docker image...'
+                sh "docker image tag ${IMAGE_NAME} ${DOCKERHUB_CREDENTIALS_USR}/everyday:${IMAGE_TAG}"
+                sh "docker image tag ${IMAGE_NAME} ${DOCKERHUB_CREDENTIALS_USR}/everyday:latest"
+
+                sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
+
+                sh "docker push ${DOCKERHUB_CREDENTIALS_USR}/everyday:${IMAGE_TAG}"
+                sh "docker push ${DOCKERHUB_CREDENTIALS_USR}/everyday:latest"
+
+                sh "docker rmi ${DOCKERHUB_CREDENTIALS_USR}/everyday:${IMAGE_TAG}"
+                sh "docker rmi ${DOCKERHUB_CREDENTIALS_USR}/everyday:latest"
+            }
+        }
+    }
+
+    post {
+        always {
+            sh "docker logout"
+            script {
+                try {
+                    sh "docker rmi ${IMAGE_NAME}"
+                } catch (err) {
+                    echo err.getMessage()
+                }
             }
         }
     }
